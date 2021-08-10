@@ -1,18 +1,17 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `Gatsby Starter Blog MDX`,
     author: {
       name: `Kyle Mathews`,
       summary: `who lives and works in San Francisco building useful things.`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
+    description: `An extension of the gatsby starter blog, with support for MDX`,
+    siteUrl: `https://gatsby-starter-blog-mdx-demo.netlify.com/`,
     social: {
-      twitter: `kylemathews`,
+      twitter: `mattinthecouch`,
     },
   },
   plugins: [
-    `gatsby-plugin-image`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -28,13 +27,17 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        plugins: [
+        extensions: [".mdx", ".md"],
+        // a workaround to solve mdx-remark plugin compat issue
+        // https://github.com/gatsbyjs/gatsby/issues/15486
+        plugins: [`gatsby-remark-images`],
+        gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 630,
+              maxWidth: 590,
             },
           },
           {
@@ -43,9 +46,15 @@ module.exports = {
               wrapperStyle: `margin-bottom: 1.0725rem`,
             },
           },
-          `gatsby-remark-prismjs`,
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`,
+          {
+            resolve: `gatsby-remark-copy-linked-files`,
+          },
+          {
+            resolve: `gatsby-remark-smartypants`,
+          },
+          {
+            resolve: `gatsby-remark-prismjs`,
+          },
         ],
       },
     },
@@ -54,7 +63,7 @@ module.exports = {
     // {
     //   resolve: `gatsby-plugin-google-analytics`,
     //   options: {
-    //     trackingId: `ADD YOUR TRACKING ID HERE`,
+    //     //trackingId: `ADD YOUR TRACKING ID HERE`,
     //   },
     // },
     {
@@ -67,44 +76,51 @@ module.exports = {
                 title
                 description
                 siteUrl
-                site_url: siteUrl
               }
             }
           }
         `,
         feeds: [
           {
-            serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.nodes.map(node => {
-                return Object.assign({}, node.frontmatter, {
-                  description: node.excerpt,
-                  date: node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + node.fields.slug,
-                  guid: site.siteMetadata.siteUrl + node.fields.slug,
-                  custom_elements: [{ "content:encoded": node.html }],
+            serialize: ({ query: { site, allMdx } }) => {
+              return allMdx.edges.map(edge => {
+                return Object.assign({}, edge.node.frontmatter, {
+                  description: edge.node.excerpt,
+                  data: edge.node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  custom_elements: [{ "content:encoded": edge.node.html }],
                 })
               })
             },
+
+            /* if you want to filter for only published posts, you can do
+             * something like this:
+             * filter: { frontmatter: { published: { ne: false } } }
+             * just make sure to add a published frontmatter field to all posts,
+             * otherwise gatsby will complain
+             **/
             query: `
-              {
-                allMarkdownRemark(
-                  sort: { order: DESC, fields: [frontmatter___date] },
-                ) {
-                  nodes {
-                    excerpt
-                    html
-                    fields {
-                      slug
-                    }
+            {
+              allMdx(
+                limit: 1000,
+                sort: { order: DESC, fields: [frontmatter___date] },
+              ) {
+                edges {
+                  node {
+                    fields { slug }
                     frontmatter {
                       title
                       date
                     }
+                    html
                   }
                 }
               }
+            }
             `,
             output: "/rss.xml",
+            title: "Gatsby RSS feed",
           },
         ],
       },
@@ -121,10 +137,7 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-gatsby-cloud`,
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
   ],
 }
