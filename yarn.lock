@@ -6196,6 +6196,14 @@ gatsby-plugin-sitemap@^4.7.0:
     minimatch "^3.0.4"
     sitemap "^7.0.0"
 
+gatsby-plugin-theme-switcher@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-theme-switcher/-/gatsby-plugin-theme-switcher-1.0.0.tgz#bff70a59c50356d4170526ca7b5467fe5f85bb45"
+  integrity sha512-nWSHL2CIVE/T+SSKl4IQ3RaT3NYUpAz2u8wCztabk6tLZ4UqS6csgG2fZhul6fK5xZ0xI430EwJqIhhamhL43A==
+  dependencies:
+    prop-types "^15.7.2"
+    terser "^4.8.0"
+
 gatsby-plugin-typescript@^3.11.0:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-typescript/-/gatsby-plugin-typescript-3.11.0.tgz#4c68d62a2813eefcece50f776e1996af4a5b6f5a"
@@ -12177,7 +12185,7 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
-source-map-support@^0.5.17, source-map-support@^0.5.19, source-map-support@~0.5.19:
+source-map-support@^0.5.17, source-map-support@^0.5.19, source-map-support@~0.5.12, source-map-support@~0.5.19:
   version "0.5.19"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
   integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
@@ -12821,6 +12829,15 @@ terser-webpack-plugin@^5.1.1, terser-webpack-plugin@^5.1.3:
     serialize-javascript "^6.0.0"
     source-map "^0.6.1"
     terser "^5.7.0"
+
+terser@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.0.tgz#63056343d7c70bb29f3af665865a46fe03a0df17"
+  integrity sha512-EAPipTNeWsb/3wLPeup1tVPaXfIaU68xMnVdPafIL1TV05OhASArYyIfFvnvJCNrR2NIOvDVNNTFRa+Re2MWyw==
+  dependencies:
+    commander "^2.20.0"
+    source-map "~0.6.1"
+    source-map-support "~0.5.12"
 
 terser@^5.7.0:
   version "5.7.1"

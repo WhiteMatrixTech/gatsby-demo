@@ -29,6 +29,15 @@ module.exports = {
       },
     },
     {
+      resolve: "gatsby-plugin-theme-switcher",
+      options: {
+        defaultDarkTheme: "dark",
+        defaultLightTheme: "light",
+        themeStorageKey: "theme",
+        minify: true,
+      },
+    },
+    {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [".mdx", ".md"],
