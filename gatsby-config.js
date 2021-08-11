@@ -29,6 +29,15 @@ module.exports = {
       },
     },
     {
+      resolve: "gatsby-plugin-theme-switcher",
+      options: {
+        defaultDarkTheme: "dark",
+        defaultLightTheme: "light",
+        themeStorageKey: "theme",
+        minify: true,
+      },
+    },
+    {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [".mdx", ".md"],
@@ -163,15 +172,6 @@ module.exports = {
 
             return acc
           }, {})
-          // console.log(
-          //   JSON.stringify(
-          //     allPages.map(page => {
-          //       return { ...page, ...allNodeMap[page.path] }
-          //     }),
-          //     null,
-          //     2
-          //   )
-          // )
           return allPages.map(page => {
             return { ...page, ...allNodeMap[page.path] }
           })
