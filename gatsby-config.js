@@ -1,3 +1,5 @@
+const siteUrl = `https://example.com`
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Starter Blog MDX`,
@@ -6,7 +8,7 @@ module.exports = {
       summary: `who lives and works in San Francisco building useful things.`,
     },
     description: `An extension of the gatsby starter blog, with support for MDX`,
-    siteUrl: `https://gatsby-starter-blog-mdx-demo.netlify.com/`,
+    siteUrl,
     social: {
       twitter: `mattinthecouch`,
     },
@@ -123,6 +125,63 @@ module.exports = {
             title: "Gatsby RSS feed",
           },
         ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        query: `
+        {
+          allSitePage {
+            nodes {
+              path
+            }
+          }
+          allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+            nodes {
+              fields {
+                slug
+              }
+              frontmatter {
+                date
+              }
+            }
+          }
+        }
+      `,
+        resolveSiteUrl: () => siteUrl,
+        resolvePages: ({
+          allSitePage: { nodes: allPages },
+          allMdx: { nodes: allNodes },
+        }) => {
+          const allNodeMap = allNodes.reduce((acc, node) => {
+            const { slug } = node.fields
+            acc[slug] = {
+              path: slug,
+              modifiedGmt: node.frontmatter.date,
+            }
+
+            return acc
+          }, {})
+          // console.log(
+          //   JSON.stringify(
+          //     allPages.map(page => {
+          //       return { ...page, ...allNodeMap[page.path] }
+          //     }),
+          //     null,
+          //     2
+          //   )
+          // )
+          return allPages.map(page => {
+            return { ...page, ...allNodeMap[page.path] }
+          })
+        },
+        serialize: ({ path, modifiedGmt = "" }) => {
+          return {
+            url: path,
+            lastmod: modifiedGmt,
+          }
+        },
       },
     },
     {
