@@ -2,8 +2,8 @@ name: Typescript Testing
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
     paths-ignore:
       - .vscode/**
       - LICENSE
